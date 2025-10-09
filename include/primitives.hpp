@@ -3,8 +3,11 @@
 
 #include <array>
 #include <vector>
+#include <cmath>
 
 #include "concepts.hpp"
+
+#define EPSILON 1e-9
 
 namespace Primitives 
 {
@@ -19,7 +22,38 @@ namespace Primitives
     struct Point<NT, 2>
     {
         NT x, y;
+
+        bool operator==(const Point& other) const 
+        {
+            if constexpr (std::integral<NT>)
+            {
+                return x == other.x && y == other.y;
+            }
+            else if constexpr (std::floating_point<NT>)
+            {
+                return std::fabs(x - other.x) <= EPSILON &&
+                       std::fabs(y - other.y) <= EPSILON;
+            }
+        }
+
+        Point operator+(const Point& other) const 
+        {
+            return { x + other.x, y + other.y };
+        }
+
+        Point operator-(const Point& other) const 
+        {
+            return { x - other.x, y - other.y };
+        }
+
+        Point operator*(NT num) const 
+        {
+            return { x * num, y * num };
+        }
     };
+
+    template<NumericType NT>
+    using Vector = Point<NT, 2>;
 
     template<NumericType NT, size_t D>
     struct Segment 
