@@ -53,6 +53,13 @@ namespace Primitives
     };
 
     template<NumericType NT>
+    std::ostream& operator<<(std::ostream& stream, const Point<NT, 2> point)
+    {
+        stream << "(" << point.x << ", " << point.y << ")";
+        return stream;
+    }
+
+    template<NumericType NT>
     using Vector = Point<NT, 2>;
 
     template<NumericType NT, size_t D>
